@@ -16,11 +16,18 @@ int main() {
 	char str[MAX_INPUT]; //входная строка
 	char *argv[MAX_INPUT/2 + 1];
 	
+	int synch; //в зависимости от значения этой переменной, новый процесс может запускаться либо синхронно, либо асинхронно
+	
 	while(1) {
+		synch = 1; //по умолчанию синхронно
 		printf("$ ");
 		if(fgets(str, MAX_INPUT, stdin) == NULL) { printf("fgets error\n"); continue; }
 		if(strlen(str) == 1) continue; //если была введена пустая строка
 		if(str[strlen(str) - 1] == '\n') str[strlen(str) - 1] = '\0'; //удаление символа новой строки
+		if(str[strlen(str) - 1] == '&') { //если в конце строки символ '&', значит новый процесс нужно запускать асинхронно
+			str[strlen(str) - 1] = '\0';
+			synch = 0;
+		}
 		argv[0] = strtok(str, " "); //начало разбиения строки на лексемы и запись первой лексемы в массив
 		
 		if(!strcmp(argv[0], "exit")) break; //выход из цикла, если первое слово в строке - exit
@@ -44,7 +51,9 @@ int main() {
 			if(execvp(argv[0], argv)) printf("exec error\n");
 			break;
 		default:
-			wait(NULL);
+			if(synch) {
+				while (wait(NULL) != pid);
+			}
 			break;
 		}
 	}
