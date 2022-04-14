@@ -51,9 +51,7 @@ int main() {
 			if(execvp(argv[0], argv)) printf("exec error\n");
 			break;
 		default:
-			if(synch) {
-				while (wait(NULL) != pid);
-			}
+			if(synch) waitpid(pid, NULL, 0);
 			break;
 		}
 	}
