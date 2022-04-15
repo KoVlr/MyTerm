@@ -22,6 +22,7 @@ int main() {
 		synch = 1; //по умолчанию синхронно
 		printf("$ ");
 		if(fgets(str, MAX_INPUT, stdin) == NULL) { printf("fgets error\n"); continue; }
+		waitpid(-1, NULL, WNOHANG); //уничтожение процессов зомби
 		if(strlen(str) == 1) continue; //если была введена пустая строка
 		if(str[strlen(str) - 1] == '\n') str[strlen(str) - 1] = '\0'; //удаление символа новой строки
 		if(str[strlen(str) - 1] == '&') { //если в конце строки символ '&', значит новый процесс нужно запускать асинхронно
