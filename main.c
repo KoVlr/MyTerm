@@ -49,7 +49,7 @@ int main() {
 			printf("fork failed\n");
 			return 1;
 		case 0:
-			if(execvp(argv[0], argv)) printf("exec error\n");
+			if(execvp(argv[0], argv)) { printf("exec error\n"); return 1; }
 			break;
 		default:
 			if(synch) waitpid(pid, NULL, 0);
