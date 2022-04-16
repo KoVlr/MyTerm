@@ -8,8 +8,6 @@
 
 #define MAX_INPUT 131072
 
-void ctrlc(int sig);
-
 int main() {
 	signal(SIGINT, SIG_IGN);
 	
@@ -60,6 +58,3 @@ int main() {
 	
 	return 0;
 }
-
-void ctrlc(int sig) {}
-
