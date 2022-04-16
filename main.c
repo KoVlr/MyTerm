@@ -11,7 +11,7 @@
 void ctrlc(int sig);
 
 int main() {
-	signal(SIGINT, ctrlc);
+	signal(SIGINT, SIG_IGN);
 	
 	char str[MAX_INPUT]; //входная строка
 	char *argv[MAX_INPUT/2 + 1];
@@ -49,6 +49,7 @@ int main() {
 			printf("fork failed\n");
 			return 1;
 		case 0:
+			if(synch) signal(SIGINT, SIG_DFL);
 			if(execvp(argv[0], argv)) { printf("exec error\n"); return 1; }
 			break;
 		default:
